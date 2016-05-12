@@ -5,10 +5,10 @@ from trytond.pool import PoolMeta, Pool
 from trytond.transaction import Transaction
 
 __all__ = ['PartyConfiguration']
-__metaclass__ = PoolMeta
 
 
 class PartyConfiguration:
+    __metaclass__ = PoolMeta
     __name__ = 'party.configuration'
 
     @classmethod

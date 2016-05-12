@@ -7,7 +7,6 @@ from trytond.report import Report
 from trytond.pyson import Eval, If
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
-from trytond.backend.database import CursorInterface
 
 try:
     import pytz
@@ -16,12 +15,11 @@ except ImportError:
     TIMEZONES = []
 TIMEZONES += [(None, '')]
 
-CursorInterface.cache_keys.update({'company', 'employee'})
+Transaction.cache_keys.update({'company', 'employee'})
 
 __all__ = ['Company', 'Employee', 'UserEmployee', 'User', 'Property',
     'Sequence', 'SequenceStrict', 'Date', 'CompanyConfigStart',
-    'CompanyConfig', 'CompanyReport', 'LetterReport']
-__metaclass__ = PoolMeta
+    'CompanyConfig', 'CompanyReport', 'LetterReport', 'Rule']
 
 
 class Company(ModelSQL, ModelView):
@@ -82,6 +80,7 @@ class UserEmployee(ModelSQL):
 
 
 class User:
+    __metaclass__ = PoolMeta
     __name__ = 'res.user'
     main_company = fields.Many2One('company.company', 'Main Company')
     company = fields.Many2One('company.company', 'Current Company',
@@ -249,8 +248,17 @@ class User:
                         values['employee'] = employee_id
         return result
 
+    @classmethod
+    def write(cls, *args):
+        pool = Pool()
+        Rule = pool.get('ir.rule')
+        super(User, cls).write(*args)
+        # Restart the cache on the domain_get method
+        Rule._domain_get_cache.clear()
+
 
 class Property:
+    __metaclass__ = PoolMeta
     __name__ = 'ir.property'
     company = fields.Many2One('company.company', 'Company',
         domain=[
@@ -280,6 +288,7 @@ class Property:
 
 
 class Sequence:
+    __metaclass__ = PoolMeta
     __name__ = 'ir.sequence'
     company = fields.Many2One('company.company', 'Company',
         domain=[
@@ -302,6 +311,7 @@ class SequenceStrict(Sequence):
 
 
 class Date:
+    __metaclass__ = PoolMeta
     __name__ = 'ir.date'
 
     @classmethod
@@ -361,3 +371,15 @@ class CompanyReport(Report):
 
 class LetterReport(CompanyReport):
     __name__ = 'party.letter'
+
+
+class Rule:
+    __metaclass__ = PoolMeta
+    __name__ = 'ir.rule'
+
+    @classmethod
+    def _get_cache_key(cls):
+        key = super(Rule, cls)._get_cache_key()
+        # XXX Use company from context instead of browse to prevent infinite
+        # loop, but the cache is cleared when User is written.
+        return key + (Transaction().context.get('company'),)

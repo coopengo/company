@@ -250,19 +250,19 @@ msgctxt "model:res.user-company.employee,name:"
 msgid "User - Employee"
 msgstr "Usuario - Empleado"
 
-msgctxt "odt:party.letter:"
+msgctxt "report:party.letter:"
 msgid "Best Regards,"
 msgstr ""
 
-msgctxt "odt:party.letter:"
+msgctxt "report:party.letter:"
 msgid "Date:"
 msgstr ""
 
-msgctxt "odt:party.letter:"
+msgctxt "report:party.letter:"
 msgid "Dear Madams and Sirs,"
 msgstr ""
 
-msgctxt "odt:party.letter:"
+msgctxt "report:party.letter:"
 msgid "Subject:"
 msgstr ""
 
@@ -274,25 +274,29 @@ msgctxt "view:company.company.config.start:"
 msgid "You can now add your company into the system."
 msgstr ""
 
+#, fuzzy
 msgctxt "view:company.company:"
 msgid "Companies"
-msgstr ""
+msgstr "Empresas"
 
+#, fuzzy
 msgctxt "view:company.company:"
 msgid "Company"
-msgstr ""
+msgstr "Empresa"
 
 msgctxt "view:company.company:"
 msgid "Reports"
 msgstr ""
 
+#, fuzzy
 msgctxt "view:company.employee:"
 msgid "Employee"
-msgstr ""
+msgstr "Empleado"
 
+#, fuzzy
 msgctxt "view:company.employee:"
 msgid "Employees"
-msgstr ""
+msgstr "Empleados"
 
 msgctxt "wizard_button:company.company.config,company,add:"
 msgid "Add"
