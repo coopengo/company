@@ -46,7 +46,7 @@ class Company(ModelSQL, ModelView):
         cls.check_recursion(companies)
 
     def get_rec_name(self, name):
-        return self.party.name
+        return self.party.rec_name
 
     @classmethod
     def write(cls, companies, values, *args):
@@ -382,4 +382,5 @@ class Rule:
         key = super(Rule, cls)._get_cache_key()
         # XXX Use company from context instead of browse to prevent infinite
         # loop, but the cache is cleared when User is written.
-        return key + (Transaction().context.get('company'),)
+        return key + (Transaction().context.get('company'),
+            Transaction().context.get('employee'))
