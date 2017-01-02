@@ -42,9 +42,10 @@ msgctxt "field:company.company,party:"
 msgid "Party"
 msgstr ""
 
+#, fuzzy
 msgctxt "field:company.company,rec_name:"
 msgid "Name"
-msgstr ""
+msgstr "Namu"
 
 msgctxt "field:company.company,timezone:"
 msgid "Timezone"
@@ -74,6 +75,10 @@ msgctxt "field:company.employee,create_uid:"
 msgid "Create User"
 msgstr ""
 
+msgctxt "field:company.employee,end_date:"
+msgid "End Date"
+msgstr ""
+
 msgctxt "field:company.employee,id:"
 msgid "ID"
 msgstr ""
@@ -82,8 +87,13 @@ msgctxt "field:company.employee,party:"
 msgid "Party"
 msgstr ""
 
+#, fuzzy
 msgctxt "field:company.employee,rec_name:"
 msgid "Name"
+msgstr "Namu"
+
+msgctxt "field:company.employee,start_date:"
+msgid "Start Date"
 msgstr ""
 
 msgctxt "field:company.employee,write_date:"
@@ -118,9 +128,10 @@ msgctxt "field:ir.cron-company.company,id:"
 msgid "ID"
 msgstr ""
 
+#, fuzzy
 msgctxt "field:ir.cron-company.company,rec_name:"
 msgid "Name"
-msgstr ""
+msgstr "Namu"
 
 msgctxt "field:ir.cron-company.company,write_date:"
 msgid "Write Date"
@@ -178,9 +189,10 @@ msgctxt "field:res.user-company.employee,id:"
 msgid "ID"
 msgstr ""
 
+#, fuzzy
 msgctxt "field:res.user-company.employee,rec_name:"
 msgid "Name"
-msgstr ""
+msgstr "Namu"
 
 msgctxt "field:res.user-company.employee,user:"
 msgid "User"
@@ -267,15 +279,7 @@ msgid "Subject:"
 msgstr ""
 
 msgctxt "view:company.company.config.start:"
-msgid "Create Company"
-msgstr ""
-
-msgctxt "view:company.company.config.start:"
 msgid "You can now add your company into the system."
-msgstr ""
-
-msgctxt "view:company.company:"
-msgid "Companies"
 msgstr ""
 
 msgctxt "view:company.company:"
@@ -284,14 +288,6 @@ msgstr ""
 
 msgctxt "view:company.company:"
 msgid "Reports"
-msgstr ""
-
-msgctxt "view:company.employee:"
-msgid "Employee"
-msgstr ""
-
-msgctxt "view:company.employee:"
-msgid "Employees"
 msgstr ""
 
 msgctxt "wizard_button:company.company.config,company,add:"
