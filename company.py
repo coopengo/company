@@ -18,7 +18,7 @@ TIMEZONES += [(None, '')]
 
 Transaction.cache_keys.update({'company', 'employee'})
 
-__all__ = ['Company', 'Employee', 'UserEmployee', 'User', 'Property',
+__all__ = ['Company', 'Employee', 'UserEmployee', 'User',
     'Sequence', 'SequenceStrict', 'Date', 'CompanyConfigStart',
     'CompanyConfig', 'CompanyReport', 'LetterReport', 'Rule']
 
@@ -29,17 +29,20 @@ class Company(ModelSQL, ModelView):
     _rec_name = 'party'
     party = fields.Many2One('party.party', 'Party', required=True,
             ondelete='CASCADE')
-    parent = fields.Many2One('company.company', 'Parent')
-    childs = fields.One2Many('company.company', 'parent', 'Children')
-    header = fields.Text('Header')
-    footer = fields.Text('Footer')
-    currency = fields.Many2One('currency.currency', 'Currency', required=True)
-    timezone = fields.Selection(TIMEZONES, 'Timezone', translate=False)
-    employees = fields.One2Many('company.employee', 'company', 'Employees')
-
-    @classmethod
-    def __setup__(cls):
-        super(Company, cls).__setup__()
+    parent = fields.Many2One('company.company', 'Parent',
+        help="Add the company below the parent.")
+    childs = fields.One2Many('company.company', 'parent', 'Children',
+        help="Add children below the company.")
+    header = fields.Text(
+        'Header', help="The text to display on report headers.")
+    footer = fields.Text(
+        'Footer', help="The text to display on report footers.")
+    currency = fields.Many2One('currency.currency', 'Currency', required=True,
+        help="The main currency for the company.")
+    timezone = fields.Selection(TIMEZONES, 'Timezone', translate=False,
+        help="Used to compute the today date.")
+    employees = fields.One2Many('company.employee', 'company', 'Employees',
+        help="Add employees to the company.")
 
     @classmethod
     def validate(cls, companies):
@@ -60,22 +63,26 @@ class Employee(ModelSQL, ModelView):
     'Employee'
     __name__ = 'company.employee'
     _rec_name = 'party'
-    party = fields.Many2One('party.party', 'Party', required=True)
-    company = fields.Many2One('company.company', 'Company', required=True)
+    party = fields.Many2One('party.party', 'Party', required=True,
+        help="The party which represents the employee.")
+    company = fields.Many2One('company.company', 'Company', required=True,
+        help="The company to which the employee belongs.")
     start_date = fields.Date('Start Date',
         domain=[If((Eval('start_date')) & (Eval('end_date')),
                     ('start_date', '<=', Eval('end_date')),
                     (),
                 )
             ],
-        depends=['end_date'])
+        depends=['end_date'],
+        help="When the employee joins the company.")
     end_date = fields.Date('End Date',
         domain=[If((Eval('start_date')) & (Eval('end_date')),
                     ('end_date', '>=', Eval('start_date')),
                     (),
                 )
             ],
-        depends=['start_date'])
+        depends=['start_date'],
+        help="When the employee leaves the company.")
 
     @staticmethod
     def default_company():
@@ -97,20 +104,24 @@ class UserEmployee(ModelSQL):
 class User:
     __metaclass__ = PoolMeta
     __name__ = 'res.user'
-    main_company = fields.Many2One('company.company', 'Main Company')
+    main_company = fields.Many2One('company.company', 'Main Company',
+        help="Grant access to the company and its children.")
     company = fields.Many2One('company.company', 'Current Company',
         domain=[('parent', 'child_of', [Eval('main_company')], 'parent')],
-        depends=['main_company'])
+        depends=['main_company'],
+        help="Select the company to work for.")
     companies = fields.Function(fields.One2Many('company.company', None,
-        'Current Companies'), 'get_companies')
+            'Companies'), 'get_companies')
     employees = fields.Many2Many('res.user-company.employee', 'user',
-        'employee', 'Employees')
+        'employee', 'Employees',
+        help="Add employees to grant the user access to them.")
     employee = fields.Many2One('company.employee', 'Current Employee',
         domain=[
             ('company', '=', Eval('company', -1)),
             ('id', 'in', Eval('employees', [])),
             ],
-        depends=['company', 'employees'])
+        depends=['company', 'employees'],
+        help="Select the employee to make the user behave as such.")
 
     @classmethod
     def __setup__(cls):
@@ -272,36 +283,6 @@ class User:
         Rule._domain_get_cache.clear()
 
 
-class Property:
-    __metaclass__ = PoolMeta
-    __name__ = 'ir.property'
-    company = fields.Many2One('company.company', 'Company',
-        domain=[
-            ('id', If(Eval('context', {}).contains('company'), '=', '!='),
-                Eval('context', {}).get('company', -1)),
-            ])
-
-    @classmethod
-    def _set_values(cls, model, res_id, val, field_id):
-        User = Pool().get('res.user')
-        user_id = Transaction().user
-        if user_id == 0:
-            user_id = Transaction().context.get('user', user_id)
-        user = User(user_id)
-        res = super(Property, cls)._set_values(model, res_id, val, field_id)
-        if user and user.company:
-            res['company'] = user.company.id
-        return res
-
-    @classmethod
-    def search(cls, domain, offset=0, limit=None, order=None, count=False,
-            query=False):
-        if Transaction().user == 0 and 'user' not in Transaction().context:
-            domain = ['AND', domain[:], ('company', '=', None)]
-        return super(Property, cls).search(domain, offset=offset, limit=limit,
-            order=order, count=count, query=query)
-
-
 class Sequence:
     __metaclass__ = PoolMeta
     __name__ = 'ir.sequence'
@@ -309,7 +290,7 @@ class Sequence:
         domain=[
             ('id', If(Eval('context', {}).contains('company'), '=', '!='),
                 Eval('context', {}).get('company', -1)),
-            ])
+            ], help="Restrict the sequence usage to the company.")
 
     @classmethod
     def __setup__(cls):
