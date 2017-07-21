@@ -1,3 +1,7 @@
+Version 4.4.0 - 2017-05-01
+* Bug fixes (see mercurial logs for details)
+* Remove multi-company on Party sequence
+
 Version 4.2.0 - 2016-11-28
 * Bug fixes (see mercurial logs for details)
 * Add start and end dates on employee
