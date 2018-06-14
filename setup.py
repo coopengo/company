@@ -53,6 +53,10 @@ for dep in info.get('depends', []):
         requires.append(get_require_version('trytond_%s' % dep))
 requires.append(get_require_version('trytond'))
 
+dependency_links = []
+if minor_version % 2:
+    dependency_links.append('https://trydevpi.tryton.org/')
+
 setup(name=name,
     version=version,
     description='Tryton module with companies and employees',
@@ -90,6 +94,7 @@ setup(name=name,
         'Natural Language :: German',
         'Natural Language :: Hungarian',
         'Natural Language :: Italian',
+        'Natural Language :: Persian',
         'Natural Language :: Polish',
         'Natural Language :: Portuguese (Brazilian)',
         'Natural Language :: Russian',
@@ -109,6 +114,7 @@ setup(name=name,
     extras_require={
         'timezone': ['pytz'],
         },
+    dependency_links=dependency_links,
     zip_safe=False,
     entry_points="""
     [trytond.modules]
