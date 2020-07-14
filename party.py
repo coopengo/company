@@ -5,28 +5,25 @@ from trytond.pool import PoolMeta, Pool
 from trytond.tools.multivalue import migrate_property
 from trytond.transaction import Transaction
 
+from .company import CompanyReport
 from .model import CompanyMultiValueMixin, CompanyValueMixin
-
-__all__ = ['Configuration', 'PartyConfigurationLang', 'Party', 'PartyLang',
-    'PartyReplace', 'PartyErase', 'ContactMechanism']
 
 
 class Configuration(CompanyMultiValueMixin, metaclass=PoolMeta):
     __name__ = 'party.configuration'
 
 
-class PartyConfigurationLang(CompanyValueMixin, metaclass=PoolMeta):
+class ConfigurationLang(CompanyValueMixin, metaclass=PoolMeta):
     __name__ = 'party.configuration.party_lang'
 
     @classmethod
     def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
-        exist = TableHandler.table_exist(cls._table)
+        exist = backend.TableHandler.table_exist(cls._table)
         if exist:
             table = cls.__table_handler__(module_name)
             exist &= table.column_exist('company')
 
-        super(PartyConfigurationLang, cls).__register__(module_name)
+        super().__register__(module_name)
 
         if not exist:
             # Re-migrate with company
@@ -44,8 +41,7 @@ class PartyLang(CompanyValueMixin, metaclass=PoolMeta):
 
     @classmethod
     def __register__(cls, module_name):
-        TableHandler = backend.get('TableHandler')
-        exist = TableHandler.table_exist(cls._table)
+        exist = backend.TableHandler.table_exist(cls._table)
         if exist:
             table = cls.__table_handler__(module_name)
             exist &= table.column_exist('company')
@@ -63,18 +59,18 @@ class PartyLang(CompanyValueMixin, metaclass=PoolMeta):
             field_names, value_names, fields)
 
 
-class PartyReplace(metaclass=PoolMeta):
+class Replace(metaclass=PoolMeta):
     __name__ = 'party.replace'
 
     @classmethod
     def fields_to_replace(cls):
-        return super(PartyReplace, cls).fields_to_replace() + [
+        return super().fields_to_replace() + [
             ('company.company', 'party'),
             ('company.employee', 'party'),
             ]
 
 
-class PartyErase(metaclass=PoolMeta):
+class Erase(metaclass=PoolMeta):
     __name__ = 'party.erase'
 
     def check_erase(self, party):
@@ -82,7 +78,7 @@ class PartyErase(metaclass=PoolMeta):
         Party = pool.get('party.party')
         Company = pool.get('company.company')
 
-        super(PartyErase, self).check_erase(party)
+        super().check_erase(party)
 
         with Transaction().set_user(0):
             companies = Company.search([])
@@ -105,8 +101,17 @@ class ContactMechanism(CompanyMultiValueMixin, metaclass=PoolMeta):
 
         yield from super()._phone_country_codes()
 
-        if 'company' in context:
+        if context.get('company'):
             company = Company(context['company'])
             for address in company.party.addresses:
                 if address.country:
                     yield address.country.code
+
+
+class LetterReport(CompanyReport):
+    __name__ = 'party.letter'
+
+    @classmethod
+    def execute(cls, ids, data):
+        with Transaction().set_context(address_with_party=True):
+            return super(LetterReport, cls).execute(ids, data)

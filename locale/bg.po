@@ -6,14 +6,6 @@ msgctxt "field:company.company,childs:"
 msgid "Children"
 msgstr "Наследници"
 
-msgctxt "field:company.company,create_date:"
-msgid "Create Date"
-msgstr "Създадено на"
-
-msgctxt "field:company.company,create_uid:"
-msgid "Create User"
-msgstr "Създадено от"
-
 msgctxt "field:company.company,currency:"
 msgid "Currency"
 msgstr "Валута"
@@ -30,10 +22,6 @@ msgctxt "field:company.company,header:"
 msgid "Header"
 msgstr "Горен колонтитул"
 
-msgctxt "field:company.company,id:"
-msgid "ID"
-msgstr "ID"
-
 msgctxt "field:company.company,parent:"
 msgid "Parent"
 msgstr "Родител"
@@ -42,66 +30,34 @@ msgctxt "field:company.company,party:"
 msgid "Party"
 msgstr "Партньор"
 
-msgctxt "field:company.company,rec_name:"
-msgid "Record Name"
-msgstr ""
-
 #, fuzzy
 msgctxt "field:company.company,timezone:"
 msgid "Timezone"
 msgstr "Времева зона"
 
-msgctxt "field:company.company,write_date:"
-msgid "Write Date"
-msgstr "Променено на"
-
-msgctxt "field:company.company,write_uid:"
-msgid "Write User"
-msgstr "Променено от"
-
-msgctxt "field:company.company.config.start,id:"
-msgid "ID"
-msgstr "ID"
-
 msgctxt "field:company.employee,company:"
 msgid "Company"
 msgstr "Фирма"
-
-msgctxt "field:company.employee,create_date:"
-msgid "Create Date"
-msgstr "Създадено на"
-
-msgctxt "field:company.employee,create_uid:"
-msgid "Create User"
-msgstr "Създадено от"
 
 msgctxt "field:company.employee,end_date:"
 msgid "End Date"
 msgstr ""
 
-msgctxt "field:company.employee,id:"
-msgid "ID"
-msgstr "ID"
-
 msgctxt "field:company.employee,party:"
 msgid "Party"
 msgstr "Партньор"
-
-msgctxt "field:company.employee,rec_name:"
-msgid "Record Name"
-msgstr ""
 
 msgctxt "field:company.employee,start_date:"
 msgid "Start Date"
 msgstr ""
 
-msgctxt "field:company.employee,write_date:"
-msgid "Write Date"
-msgstr "Променено на"
+msgctxt "field:company.employee,subordinates:"
+msgid "Subordinates"
+msgstr ""
 
-msgctxt "field:company.employee,write_uid:"
-msgid "Write User"
-msgstr "Променено от"
+msgctxt "field:company.employee,supervisor:"
+msgid "Supervisor"
+msgstr ""
 
 msgctxt "field:ir.cron,companies:"
 msgid "Companies"
@@ -111,33 +67,9 @@ msgctxt "field:ir.cron-company.company,company:"
 msgid "Company"
 msgstr "Фирма"
 
-msgctxt "field:ir.cron-company.company,create_date:"
-msgid "Create Date"
-msgstr "Създадено на"
-
-msgctxt "field:ir.cron-company.company,create_uid:"
-msgid "Create User"
-msgstr "Създадено от"
-
 msgctxt "field:ir.cron-company.company,cron:"
 msgid "Cron"
 msgstr "Планировщик"
-
-msgctxt "field:ir.cron-company.company,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:ir.cron-company.company,rec_name:"
-msgid "Record Name"
-msgstr ""
-
-msgctxt "field:ir.cron-company.company,write_date:"
-msgid "Write Date"
-msgstr "Променено на"
-
-msgctxt "field:ir.cron-company.company,write_uid:"
-msgid "Write User"
-msgstr "Променено от"
 
 msgctxt "field:ir.sequence,company:"
 msgid "Company"
@@ -179,37 +111,13 @@ msgctxt "field:res.user,main_company:"
 msgid "Main Company"
 msgstr "Основна фирма"
 
-msgctxt "field:res.user-company.employee,create_date:"
-msgid "Create Date"
-msgstr "Създадено на"
-
-msgctxt "field:res.user-company.employee,create_uid:"
-msgid "Create User"
-msgstr "Създадено от"
-
 msgctxt "field:res.user-company.employee,employee:"
 msgid "Employee"
 msgstr "Служител"
 
-msgctxt "field:res.user-company.employee,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:res.user-company.employee,rec_name:"
-msgid "Record Name"
-msgstr ""
-
 msgctxt "field:res.user-company.employee,user:"
 msgid "User"
 msgstr "Потребител"
-
-msgctxt "field:res.user-company.employee,write_date:"
-msgid "Write Date"
-msgstr "Променено на"
-
-msgctxt "field:res.user-company.employee,write_uid:"
-msgid "Write User"
-msgstr "Променено от"
 
 msgctxt "help:company.company,childs:"
 msgid "Add children below the company."
@@ -255,9 +163,24 @@ msgctxt "help:company.employee,start_date:"
 msgid "When the employee joins the company."
 msgstr ""
 
+msgctxt "help:company.employee,subordinates:"
+msgid "The employees to be overseen by this employee."
+msgstr ""
+
+msgctxt "help:company.employee,supervisor:"
+msgid "The employee who oversees this employee."
+msgstr ""
+
+#, fuzzy
 msgctxt "help:ir.cron,companies:"
-msgid "Companies registered for this cron"
+msgid "Companies registered for this cron."
 msgstr "Фирми регистрирани за този планировщик"
+
+msgctxt "help:ir.rule,domain:"
+msgid ""
+"\n"
+"- \"employee\" from the current user"
+msgstr ""
 
 msgctxt "help:ir.sequence,company:"
 msgid "Restrict the sequence usage to the company."
@@ -315,6 +238,10 @@ msgctxt "model:ir.action,name:act_employee_form"
 msgid "Employees"
 msgstr "Employees"
 
+msgctxt "model:ir.action,name:act_employee_subordinates"
+msgid "Supervised by"
+msgstr ""
+
 #, fuzzy
 msgctxt "model:ir.action,name:report_letter"
 msgid "Letter"
@@ -333,6 +260,11 @@ msgid "User in company"
 msgstr ""
 
 #, fuzzy
+msgctxt "model:ir.ui.menu,name:menu_company"
+msgid "Company"
+msgstr "Фирма"
+
+#, fuzzy
 msgctxt "model:ir.ui.menu,name:menu_company_list"
 msgid "Companies"
 msgstr "Companies"
@@ -346,6 +278,14 @@ msgstr "Companies"
 msgctxt "model:ir.ui.menu,name:menu_employee_form"
 msgid "Employees"
 msgstr "Employees"
+
+msgctxt "model:res.group,name:group_company_admin"
+msgid "Company Administration"
+msgstr ""
+
+msgctxt "model:res.group,name:group_employee_admin"
+msgid "Employee Administration"
+msgstr ""
 
 msgctxt "model:res.user-company.employee,name:"
 msgid "User - Employee"

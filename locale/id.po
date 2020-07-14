@@ -4,142 +4,139 @@ msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "field:company.company,childs:"
 msgid "Children"
-msgstr "ບັນຊີຍ່ອຍ"
+msgstr "Cabang"
 
 msgctxt "field:company.company,currency:"
 msgid "Currency"
-msgstr "ສະກຸນເງິນ"
+msgstr "Mata uang"
 
 msgctxt "field:company.company,employees:"
 msgid "Employees"
-msgstr "ພະນັກງານ"
+msgstr "Pegawai-pegawai"
 
 msgctxt "field:company.company,footer:"
 msgid "Footer"
-msgstr "ຕີນກະດາດ"
+msgstr "Kaki"
 
 msgctxt "field:company.company,header:"
 msgid "Header"
-msgstr "ຫົວກະດາດ"
+msgstr "Tajuk"
 
 msgctxt "field:company.company,parent:"
 msgid "Parent"
-msgstr "ບັນຊີແມ່"
+msgstr "Induk"
 
 msgctxt "field:company.company,party:"
 msgid "Party"
-msgstr "ພາກສ່ວນ"
+msgstr "Pihak"
 
 msgctxt "field:company.company,timezone:"
 msgid "Timezone"
-msgstr "ເຂດເວລາ"
+msgstr "Zona waktu"
 
 msgctxt "field:company.employee,company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
 msgctxt "field:company.employee,end_date:"
 msgid "End Date"
-msgstr "ວັນທີສິ້ນສຸດ"
+msgstr "Tanggal Akhir"
 
 msgctxt "field:company.employee,party:"
 msgid "Party"
-msgstr "ພາກສ່ວນ"
+msgstr "Pihak"
 
 msgctxt "field:company.employee,start_date:"
 msgid "Start Date"
-msgstr "ວັນທີເລີ່ມ"
+msgstr "Tanggal Awal"
 
 msgctxt "field:company.employee,subordinates:"
 msgid "Subordinates"
-msgstr ""
+msgstr "Bawahan"
 
 msgctxt "field:company.employee,supervisor:"
 msgid "Supervisor"
-msgstr ""
+msgstr "Pengawas"
 
 msgctxt "field:ir.cron,companies:"
 msgid "Companies"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan-perusahaan"
 
 msgctxt "field:ir.cron-company.company,company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
 msgctxt "field:ir.cron-company.company,cron:"
 msgid "Cron"
-msgstr "ຄຣັອນ"
+msgstr "Cron"
 
 msgctxt "field:ir.sequence,company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
 msgctxt "field:ir.sequence.strict,company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
-#, fuzzy
 msgctxt "field:party.configuration.party_lang,company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
-#, fuzzy
 msgctxt "field:party.party.lang,company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
-#, fuzzy
 msgctxt "field:res.user,companies:"
 msgid "Companies"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan-perusahaan"
 
 msgctxt "field:res.user,company:"
 msgid "Current Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານປັດຈຸບັນ"
+msgstr "Perusahaan saat ini"
 
 msgctxt "field:res.user,employee:"
 msgid "Current Employee"
-msgstr "ປັດຈຸບັນເຮັດວຽກຢູ່"
+msgstr ""
 
 msgctxt "field:res.user,employees:"
 msgid "Employees"
-msgstr "ພະນັກງານ"
+msgstr "Pegawai-pegawai"
 
 msgctxt "field:res.user,main_company:"
 msgid "Main Company"
-msgstr "ສຳນັກງານ/ບໍລິສັດໃຫຍ່"
+msgstr "Perusahaan Induk"
 
 msgctxt "field:res.user-company.employee,employee:"
 msgid "Employee"
-msgstr "ພະນັກງານ"
+msgstr "Pegawai"
 
 msgctxt "field:res.user-company.employee,user:"
 msgid "User"
-msgstr "ຜູ້ໃຊ້"
+msgstr "Pengguna"
 
 msgctxt "help:company.company,childs:"
 msgid "Add children below the company."
-msgstr ""
+msgstr "Tambahkan cabang di bawah perusahaan."
 
 msgctxt "help:company.company,currency:"
 msgid "The main currency for the company."
-msgstr ""
+msgstr "Mata uang utama untuk perusahaan."
 
 msgctxt "help:company.company,employees:"
 msgid "Add employees to the company."
-msgstr ""
+msgstr "Tambahkan pegawai ke perusahaan."
 
 msgctxt "help:company.company,footer:"
 msgid "The text to display on report footers."
-msgstr ""
+msgstr "Teks yang ditampilkan pada kaki laporan."
 
 msgctxt "help:company.company,header:"
 msgid "The text to display on report headers."
-msgstr ""
+msgstr "Teks yang ditampilkan pada tajuk laporan."
 
 msgctxt "help:company.company,parent:"
 msgid "Add the company below the parent."
-msgstr ""
+msgstr "Tambahkan perusahaan di bawah induknya."
 
 msgctxt "help:company.company,timezone:"
 msgid "Used to compute the today date."
@@ -151,28 +148,27 @@ msgstr ""
 
 msgctxt "help:company.employee,end_date:"
 msgid "When the employee leaves the company."
-msgstr ""
+msgstr "Saat pegawai meninggalkan perusahaan."
 
 msgctxt "help:company.employee,party:"
 msgid "The party which represents the employee."
-msgstr ""
+msgstr "Pihak yang mewakili pegawai."
 
 msgctxt "help:company.employee,start_date:"
 msgid "When the employee joins the company."
-msgstr ""
+msgstr "Saat pegawai bergabung dengan perusahaan."
 
 msgctxt "help:company.employee,subordinates:"
 msgid "The employees to be overseen by this employee."
-msgstr ""
+msgstr "Karyawan yang akan diawasi oleh karyawan ini."
 
 msgctxt "help:company.employee,supervisor:"
 msgid "The employee who oversees this employee."
-msgstr ""
+msgstr "Karyawan yang mengawasi karyawan ini."
 
-#, fuzzy
 msgctxt "help:ir.cron,companies:"
 msgid "Companies registered for this cron."
-msgstr "ຫ້ອງການ/ສຳນັກງານ ທີ່ລົງທະບຽນ"
+msgstr ""
 
 msgctxt "help:ir.rule,domain:"
 msgid ""
@@ -202,80 +198,71 @@ msgstr ""
 
 msgctxt "help:res.user,main_company:"
 msgid "Grant access to the company and its children."
-msgstr ""
+msgstr "Berikan akses ke perusahaan dan cabang-cabangnya."
 
 msgctxt "model:company.company,name:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
 msgctxt "model:company.company.config.start,name:"
 msgid "Company Config"
-msgstr "ກຳນົດຄ່າ ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Konfigurasi Perusahaan"
 
 msgctxt "model:company.employee,name:"
 msgid "Employee"
-msgstr "ພະນັກງານ"
+msgstr "Pegawai"
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_company_config"
 msgid "Configure Company"
-msgstr "Configure Company"
+msgstr ""
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_company_list"
 msgid "Companies"
-msgstr "Companies"
+msgstr "Perusahaan-perusahaan"
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_company_tree"
 msgid "Companies"
-msgstr "Companies"
+msgstr "Perusahaan-perusahaan"
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_employee_form"
 msgid "Employees"
-msgstr "Employees"
+msgstr "Pegawai-pegawai"
 
 msgctxt "model:ir.action,name:act_employee_subordinates"
 msgid "Supervised by"
 msgstr ""
 
-#, fuzzy
 msgctxt "model:ir.action,name:report_letter"
 msgid "Letter"
-msgstr "Letter"
+msgstr ""
 
 msgctxt "model:ir.cron-company.company,name:"
 msgid "Cron - Company"
-msgstr "ຄຣັອນ - ສຳນັກງານ"
+msgstr "Cron - Perusahaan"
 
 msgctxt "model:ir.rule.group,name:rule_group_sequence"
 msgid "User in company"
-msgstr ""
+msgstr "Pengguna di dalam perusahaan"
 
 msgctxt "model:ir.rule.group,name:rule_group_sequence_strict"
 msgid "User in company"
-msgstr ""
+msgstr "Pengguna di dalam perusahaan"
 
-#, fuzzy
 msgctxt "model:ir.ui.menu,name:menu_company"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
-#, fuzzy
 msgctxt "model:ir.ui.menu,name:menu_company_list"
 msgid "Companies"
-msgstr "Companies"
+msgstr "Perusahaan-perusahaan"
 
-#, fuzzy
 msgctxt "model:ir.ui.menu,name:menu_company_tree"
 msgid "Companies"
-msgstr "Companies"
+msgstr "Perusahaan-perusahaan"
 
-#, fuzzy
 msgctxt "model:ir.ui.menu,name:menu_employee_form"
 msgid "Employees"
-msgstr "Employees"
+msgstr "Pegawai-pegawai"
 
 msgctxt "model:res.group,name:group_company_admin"
 msgid "Company Administration"
@@ -287,48 +274,48 @@ msgstr ""
 
 msgctxt "model:res.user-company.employee,name:"
 msgid "User - Employee"
-msgstr "ຜູ້ໃຊ້ - ພະນັກງານ"
+msgstr "Pengguna - Pegawai"
 
 msgctxt "report:party.letter:"
 msgid "Best Regards,"
-msgstr "ດ້ວຍຄວາມເຄົາລົບ,"
+msgstr "Salam Hormat,"
 
 msgctxt "report:party.letter:"
 msgid "Date:"
-msgstr "ວັນທີ"
+msgstr "Tanggal:"
 
 msgctxt "report:party.letter:"
 msgid "Dear Madams and Sirs,"
-msgstr "ທ່ານ ທີ່ຮັກແພງ,"
+msgstr "Nyonya dan Tuan Yth,"
 
 msgctxt "report:party.letter:"
 msgid "Subject:"
-msgstr "ເລື່ອງ:"
+msgstr "Subject:"
 
 msgctxt "view:company.company.config.start:"
 msgid "You can now add your company into the system."
-msgstr "ທ່ານສາມາດເພີ່ມສຳນັກງານຂອງທ່ານເຂົ້າໃສ່ໃນລະບົບໄດ້ແລ້ວ."
+msgstr "Anda sekarang dapat menambahkan perusahaan Anda ke dalam sistem."
 
 msgctxt "view:company.company:"
 msgid "Company"
-msgstr "ຫ້ອງການ/ສຳນັກງານ"
+msgstr "Perusahaan"
 
 msgctxt "view:company.company:"
 msgid "Reports"
-msgstr "ລາຍງານ"
+msgstr "Laporan"
 
 msgctxt "wizard_button:company.company.config,company,add:"
 msgid "Add"
-msgstr "ເພີ່ມ"
+msgstr "Tambahkan"
 
 msgctxt "wizard_button:company.company.config,company,end:"
 msgid "Cancel"
-msgstr "ຍົກເລີກ"
+msgstr "Batal"
 
 msgctxt "wizard_button:company.company.config,start,company:"
 msgid "OK"
-msgstr "ຕົກລົງ"
+msgstr "OK"
 
 msgctxt "wizard_button:company.company.config,start,end:"
 msgid "Cancel"
-msgstr "ຍົກເລີກ"
+msgstr "Batal"

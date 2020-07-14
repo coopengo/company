@@ -6,14 +6,6 @@ msgctxt "field:company.company,childs:"
 msgid "Children"
 msgstr "Alamjaotus"
 
-msgctxt "field:company.company,create_date:"
-msgid "Create Date"
-msgstr "Loomise kuupäev"
-
-msgctxt "field:company.company,create_uid:"
-msgid "Create User"
-msgstr "Looja"
-
 msgctxt "field:company.company,currency:"
 msgid "Currency"
 msgstr "Valuuta"
@@ -30,10 +22,6 @@ msgctxt "field:company.company,header:"
 msgid "Header"
 msgstr "Päis"
 
-msgctxt "field:company.company,id:"
-msgid "ID"
-msgstr "ID"
-
 msgctxt "field:company.company,parent:"
 msgid "Parent"
 msgstr "Ülem"
@@ -42,65 +30,33 @@ msgctxt "field:company.company,party:"
 msgid "Party"
 msgstr "Osapool"
 
-msgctxt "field:company.company,rec_name:"
-msgid "Record Name"
-msgstr "Kirje nimi"
-
 msgctxt "field:company.company,timezone:"
 msgid "Timezone"
 msgstr "Ajavöönd"
-
-msgctxt "field:company.company,write_date:"
-msgid "Write Date"
-msgstr "Muutmise kuupäev"
-
-msgctxt "field:company.company,write_uid:"
-msgid "Write User"
-msgstr "Muutja"
-
-msgctxt "field:company.company.config.start,id:"
-msgid "ID"
-msgstr "ID"
 
 msgctxt "field:company.employee,company:"
 msgid "Company"
 msgstr "Ettevõte"
 
-msgctxt "field:company.employee,create_date:"
-msgid "Create Date"
-msgstr "Loomise kuupäev"
-
-msgctxt "field:company.employee,create_uid:"
-msgid "Create User"
-msgstr "Looja"
-
 msgctxt "field:company.employee,end_date:"
 msgid "End Date"
 msgstr "Lõppkuupäev"
-
-msgctxt "field:company.employee,id:"
-msgid "ID"
-msgstr "ID"
 
 msgctxt "field:company.employee,party:"
 msgid "Party"
 msgstr "Osapool"
 
-msgctxt "field:company.employee,rec_name:"
-msgid "Record Name"
-msgstr "Kirje nimi"
-
 msgctxt "field:company.employee,start_date:"
 msgid "Start Date"
 msgstr "Alguskuupäev"
 
-msgctxt "field:company.employee,write_date:"
-msgid "Write Date"
-msgstr "Muutmise kuupäev"
+msgctxt "field:company.employee,subordinates:"
+msgid "Subordinates"
+msgstr ""
 
-msgctxt "field:company.employee,write_uid:"
-msgid "Write User"
-msgstr "Muutja"
+msgctxt "field:company.employee,supervisor:"
+msgid "Supervisor"
+msgstr ""
 
 msgctxt "field:ir.cron,companies:"
 msgid "Companies"
@@ -110,33 +66,9 @@ msgctxt "field:ir.cron-company.company,company:"
 msgid "Company"
 msgstr "Ettevõte"
 
-msgctxt "field:ir.cron-company.company,create_date:"
-msgid "Create Date"
-msgstr "Loomise kuupäev"
-
-msgctxt "field:ir.cron-company.company,create_uid:"
-msgid "Create User"
-msgstr "Looja"
-
 msgctxt "field:ir.cron-company.company,cron:"
 msgid "Cron"
 msgstr "Cron"
-
-msgctxt "field:ir.cron-company.company,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:ir.cron-company.company,rec_name:"
-msgid "Record Name"
-msgstr "Kirje nimi"
-
-msgctxt "field:ir.cron-company.company,write_date:"
-msgid "Write Date"
-msgstr "Muutmise kuupäev"
-
-msgctxt "field:ir.cron-company.company,write_uid:"
-msgid "Write User"
-msgstr "Muutja"
 
 msgctxt "field:ir.sequence,company:"
 msgid "Company"
@@ -174,37 +106,13 @@ msgctxt "field:res.user,main_company:"
 msgid "Main Company"
 msgstr "Peamine ettevõte"
 
-msgctxt "field:res.user-company.employee,create_date:"
-msgid "Create Date"
-msgstr "Loomise kuupäev"
-
-msgctxt "field:res.user-company.employee,create_uid:"
-msgid "Create User"
-msgstr "Looja"
-
 msgctxt "field:res.user-company.employee,employee:"
 msgid "Employee"
 msgstr "Töötaja"
 
-msgctxt "field:res.user-company.employee,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:res.user-company.employee,rec_name:"
-msgid "Record Name"
-msgstr "Kirje nimi"
-
 msgctxt "field:res.user-company.employee,user:"
 msgid "User"
 msgstr "Kasutaja"
-
-msgctxt "field:res.user-company.employee,write_date:"
-msgid "Write Date"
-msgstr "Muutmise kuupäev"
-
-msgctxt "field:res.user-company.employee,write_uid:"
-msgid "Write User"
-msgstr "Muutja"
 
 msgctxt "help:company.company,childs:"
 msgid "Add children below the company."
@@ -250,8 +158,24 @@ msgctxt "help:company.employee,start_date:"
 msgid "When the employee joins the company."
 msgstr "Kui töötaja ettevõttes alustab"
 
+#, fuzzy
+msgctxt "help:company.employee,subordinates:"
+msgid "The employees to be overseen by this employee."
+msgstr "Osapool kes töötajat esindab"
+
+#, fuzzy
+msgctxt "help:company.employee,supervisor:"
+msgid "The employee who oversees this employee."
+msgstr "Osapool kes töötajat esindab"
+
 msgctxt "help:ir.cron,companies:"
-msgid "Companies registered for this cron"
+msgid "Companies registered for this cron."
+msgstr ""
+
+msgctxt "help:ir.rule,domain:"
+msgid ""
+"\n"
+"- \"employee\" from the current user"
 msgstr ""
 
 msgctxt "help:ir.sequence,company:"
@@ -306,6 +230,10 @@ msgctxt "model:ir.action,name:act_employee_form"
 msgid "Employees"
 msgstr "Töötajad"
 
+msgctxt "model:ir.action,name:act_employee_subordinates"
+msgid "Supervised by"
+msgstr ""
+
 msgctxt "model:ir.action,name:report_letter"
 msgid "Letter"
 msgstr "Letter"
@@ -322,6 +250,11 @@ msgctxt "model:ir.rule.group,name:rule_group_sequence_strict"
 msgid "User in company"
 msgstr "Kasutaja ettevõttes"
 
+#, fuzzy
+msgctxt "model:ir.ui.menu,name:menu_company"
+msgid "Company"
+msgstr "Ettevõte"
+
 msgctxt "model:ir.ui.menu,name:menu_company_list"
 msgid "Companies"
 msgstr "Ettevõtted"
@@ -333,6 +266,14 @@ msgstr "Ettevõtted"
 msgctxt "model:ir.ui.menu,name:menu_employee_form"
 msgid "Employees"
 msgstr "Töötajad"
+
+msgctxt "model:res.group,name:group_company_admin"
+msgid "Company Administration"
+msgstr ""
+
+msgctxt "model:res.group,name:group_employee_admin"
+msgid "Employee Administration"
+msgstr ""
 
 msgctxt "model:res.user-company.employee,name:"
 msgid "User - Employee"
