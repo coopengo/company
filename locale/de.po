@@ -6,14 +6,6 @@ msgctxt "field:company.company,childs:"
 msgid "Children"
 msgstr "Untergeordnet (Unternehmen)"
 
-msgctxt "field:company.company,create_date:"
-msgid "Create Date"
-msgstr "Erstellungsdatum"
-
-msgctxt "field:company.company,create_uid:"
-msgid "Create User"
-msgstr "Erstellt durch"
-
 msgctxt "field:company.company,currency:"
 msgid "Currency"
 msgstr "Währung"
@@ -30,10 +22,6 @@ msgctxt "field:company.company,header:"
 msgid "Header"
 msgstr "Dokumentenkopf"
 
-msgctxt "field:company.company,id:"
-msgid "ID"
-msgstr "ID"
-
 msgctxt "field:company.company,parent:"
 msgid "Parent"
 msgstr "Übergeordnet (Unternehmen)"
@@ -42,65 +30,33 @@ msgctxt "field:company.company,party:"
 msgid "Party"
 msgstr "Partei"
 
-msgctxt "field:company.company,rec_name:"
-msgid "Record Name"
-msgstr "Bezeichnung des Datensatzes"
-
 msgctxt "field:company.company,timezone:"
 msgid "Timezone"
 msgstr "Zeitzone"
-
-msgctxt "field:company.company,write_date:"
-msgid "Write Date"
-msgstr "Zuletzt geändert"
-
-msgctxt "field:company.company,write_uid:"
-msgid "Write User"
-msgstr "Letzte Änderung durch"
-
-msgctxt "field:company.company.config.start,id:"
-msgid "ID"
-msgstr "ID"
 
 msgctxt "field:company.employee,company:"
 msgid "Company"
 msgstr "Unternehmen"
 
-msgctxt "field:company.employee,create_date:"
-msgid "Create Date"
-msgstr "Erstellungsdatum"
-
-msgctxt "field:company.employee,create_uid:"
-msgid "Create User"
-msgstr "Erstellt durch"
-
 msgctxt "field:company.employee,end_date:"
 msgid "End Date"
 msgstr "Enddatum"
-
-msgctxt "field:company.employee,id:"
-msgid "ID"
-msgstr "ID"
 
 msgctxt "field:company.employee,party:"
 msgid "Party"
 msgstr "Partei"
 
-msgctxt "field:company.employee,rec_name:"
-msgid "Record Name"
-msgstr "Bezeichnung des Datensatzes"
-
 msgctxt "field:company.employee,start_date:"
 msgid "Start Date"
-msgstr "Anfangsdatum"
+msgstr "Startdatum"
 
-msgctxt "field:company.employee,write_date:"
-msgid "Write Date"
-msgstr "Zuletzt geändert"
+msgctxt "field:company.employee,subordinates:"
+msgid "Subordinates"
+msgstr "Unterstellte Mitarbeiter"
 
-msgctxt "field:company.employee,write_uid:"
-msgid "Write User"
-msgstr "Letzte Änderung durch"
+msgctxt "field:company.employee,supervisor:"
+msgid "Supervisor"
+msgstr "Vorgesetzter"
 
 msgctxt "field:ir.cron,companies:"
 msgid "Companies"
@@ -110,33 +66,9 @@ msgctxt "field:ir.cron-company.company,company:"
 msgid "Company"
 msgstr "Unternehmen"
 
-msgctxt "field:ir.cron-company.company,create_date:"
-msgid "Create Date"
-msgstr "Erstellungsdatum"
-
-msgctxt "field:ir.cron-company.company,create_uid:"
-msgid "Create User"
-msgstr "Erstellt durch"
-
 msgctxt "field:ir.cron-company.company,cron:"
 msgid "Cron"
 msgstr "Cron"
-
-msgctxt "field:ir.cron-company.company,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:ir.cron-company.company,rec_name:"
-msgid "Record Name"
-msgstr "Bezeichnung des Datensatzes"
-
-msgctxt "field:ir.cron-company.company,write_date:"
-msgid "Write Date"
-msgstr "Zuletzt geändert"
-
-msgctxt "field:ir.cron-company.company,write_uid:"
-msgid "Write User"
-msgstr "Letzte Änderung durch"
 
 msgctxt "field:ir.sequence,company:"
 msgid "Company"
@@ -174,37 +106,13 @@ msgctxt "field:res.user,main_company:"
 msgid "Main Company"
 msgstr "Mutterbetrieb"
 
-msgctxt "field:res.user-company.employee,create_date:"
-msgid "Create Date"
-msgstr "Erstellungsdatum"
-
-msgctxt "field:res.user-company.employee,create_uid:"
-msgid "Create User"
-msgstr "Erstellt durch"
-
 msgctxt "field:res.user-company.employee,employee:"
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-msgctxt "field:res.user-company.employee,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:res.user-company.employee,rec_name:"
-msgid "Record Name"
-msgstr "Bezeichnung des Datensatzes"
-
 msgctxt "field:res.user-company.employee,user:"
 msgid "User"
 msgstr "Benutzer"
-
-msgctxt "field:res.user-company.employee,write_date:"
-msgid "Write Date"
-msgstr "Zuletzt geändert"
-
-msgctxt "field:res.user-company.employee,write_uid:"
-msgid "Write User"
-msgstr "Letzte Änderung durch"
 
 msgctxt "help:company.company,childs:"
 msgid "Add children below the company."
@@ -250,9 +158,25 @@ msgctxt "help:company.employee,start_date:"
 msgid "When the employee joins the company."
 msgstr "Wann ein Mitarbeiter dem Unternehmen beitritt."
 
+msgctxt "help:company.employee,subordinates:"
+msgid "The employees to be overseen by this employee."
+msgstr "Die Mitarbeiter, die diesem Mitarbeiter unterstellt sind."
+
+msgctxt "help:company.employee,supervisor:"
+msgid "The employee who oversees this employee."
+msgstr "Der Vorgesetzte dieses Mitarbeiters."
+
 msgctxt "help:ir.cron,companies:"
-msgid "Companies registered for this cron"
-msgstr "Unternehmen, für welche dieser Job durchgeführt werden soll"
+msgid "Companies registered for this cron."
+msgstr "Unternehmen, für die dieser Job durchgeführt werden soll."
+
+msgctxt "help:ir.rule,domain:"
+msgid ""
+"\n"
+"- \"employee\" from the current user"
+msgstr ""
+"\n"
+"- \"Mitarbeiter\" des aktuellen Benutzers"
 
 msgctxt "help:ir.sequence,company:"
 msgid "Restrict the sequence usage to the company."
@@ -306,6 +230,10 @@ msgctxt "model:ir.action,name:act_employee_form"
 msgid "Employees"
 msgstr "Mitarbeiter"
 
+msgctxt "model:ir.action,name:act_employee_subordinates"
+msgid "Supervised by"
+msgstr "Unterstellte Mitarbeiter"
+
 msgctxt "model:ir.action,name:report_letter"
 msgid "Letter"
 msgstr "Brief"
@@ -322,6 +250,10 @@ msgctxt "model:ir.rule.group,name:rule_group_sequence_strict"
 msgid "User in company"
 msgstr "Benutzer im Unternehmen"
 
+msgctxt "model:ir.ui.menu,name:menu_company"
+msgid "Company"
+msgstr "Unternehmen"
+
 msgctxt "model:ir.ui.menu,name:menu_company_list"
 msgid "Companies"
 msgstr "Unternehmen"
@@ -333,6 +265,14 @@ msgstr "Unternehmen"
 msgctxt "model:ir.ui.menu,name:menu_employee_form"
 msgid "Employees"
 msgstr "Mitarbeiter"
+
+msgctxt "model:res.group,name:group_company_admin"
+msgid "Company Administration"
+msgstr "Unternehmen Administration"
+
+msgctxt "model:res.group,name:group_employee_admin"
+msgid "Employee Administration"
+msgstr "Mitarbeiter Administration"
 
 msgctxt "model:res.user-company.employee,name:"
 msgid "User - Employee"
