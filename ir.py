@@ -8,17 +8,14 @@ except ImportError:
 from trytond.model import (
     ModelSQL, ModelView, fields, dualmethod, EvalEnvironment)
 from trytond.pool import PoolMeta, Pool
-from trytond.pyson import Eval, If
 from trytond.transaction import Transaction
 
 
 class Sequence(metaclass=PoolMeta):
     __name__ = 'ir.sequence'
-    company = fields.Many2One('company.company', 'Company',
-        domain=[
-            ('id', If(Eval('context', {}).contains('company'), '=', '!='),
-                Eval('context', {}).get('company', -1)),
-            ], help="Restrict the sequence usage to the company.")
+    company = fields.Many2One(
+        'company.company', "Company",
+        help="Restricts the sequence usage to the company.")
 
     @classmethod
     def __setup__(cls):
@@ -56,14 +53,19 @@ class Rule(metaclass=PoolMeta):
     def __setup__(cls):
         super().__setup__()
         cls.domain.help += '\n- "employee" from the current user'
+        cls.domain.help += '\n- "companies" from the current user'
 
     @classmethod
     def _get_cache_key(cls):
         key = super(Rule, cls)._get_cache_key()
         # XXX Use company from context instead of browse to prevent infinite
         # loop, but the cache is cleared when User is written.
-        return key + (Transaction().context.get('company'),
-            Transaction().context.get('employee'))
+        context = Transaction().context
+        return key + (
+            context.get('company'),
+            context.get('employee'),
+            context.get('company_filter'),
+            )
 
     @classmethod
     def _get_context(cls):
@@ -72,13 +74,23 @@ class Rule(metaclass=PoolMeta):
         Employee = pool.get('company.employee')
         context = super()._get_context()
         # Use root to avoid infinite loop when accessing user attributes
+        user_id = Transaction().user
         with Transaction().set_user(0):
-            user = User(Transaction().user)
+            user = User(user_id)
         if user.employee:
             with Transaction().set_context(
                     _check_access=False, _datetime=None):
                 context['employee'] = EvalEnvironment(
                     Employee(user.employee.id), Employee)
+        if user.company_filter == 'one':
+            context['companies'] = [user.company.id] if user.company else []
+            context['employees'] = [user.employee.id] if user.employee else []
+        elif user.company_filter == 'all':
+            context['companies'] = [c.id for c in user.companies]
+            context['employees'] = [e.id for e in user.employees]
+        else:
+            context['companies'] = []
+            context['employees'] = []
         return context
 
 
@@ -112,3 +124,29 @@ class CronCompany(ModelSQL):
             required=True, select=True)
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
             required=True, select=True)
+
+
+class EmailTemplate(metaclass=PoolMeta):
+    __name__ = 'ir.email.template'
+
+    @classmethod
+    def email_models(cls):
+        return super().email_models() + ['company.employee']
+
+    @classmethod
+    def _get_address(cls, record):
+        pool = Pool()
+        Employee = pool.get('company.employee')
+        address = super()._get_address(record)
+        if isinstance(record, Employee):
+            address = cls._get_address(record.party)
+        return address
+
+    @classmethod
+    def _get_language(cls, record):
+        pool = Pool()
+        Employee = pool.get('company.employee')
+        language = super()._get_language(record)
+        if isinstance(record, Employee):
+            language = cls._get_language(record.party)
+        return language

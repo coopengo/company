@@ -1,14 +1,20 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
 import unittest
+from collections import defaultdict
 from contextlib import contextmanager
 
 import trytond.tests.test_tryton
+from trytond.model import ModelView, ModelStorage
 from trytond.tests.test_tryton import ModuleTestCase, with_transaction
 from trytond.transaction import Transaction
-from trytond.pool import Pool
+from trytond.pool import Pool, isregisteredby
+from trytond.pyson import Eval, PYSONEncoder
 
 from trytond.modules.currency.tests import create_currency, add_currency_rate
+from trytond.modules.party.tests import PartyCheckEraseMixin
+
+from ..model import CompanyMultiValueMixin
 
 
 def create_company(name='Dunder Mifflin', currency=None):
@@ -48,14 +54,95 @@ def set_company(company):
     pool = Pool()
     User = pool.get('res.user')
     User.write([User(Transaction().user)], {
-            'main_company': company.id,
+            'companies': [('add', [company.id])],
             'company': company.id,
                 })
     with Transaction().set_context(User.get_preferences(context_only=True)):
         yield
 
 
-class CompanyTestCase(ModuleTestCase):
+class PartyCompanyCheckEraseMixin(PartyCheckEraseMixin):
+
+    def setup_check_erase_party(self):
+        create_company()
+        return super().setup_check_erase_party()
+
+
+class CompanyTestMixin:
+
+    @with_transaction()
+    def test_company_multivalue_context(self):
+        "Test context of company multivalue target"
+        pool = Pool()
+        Company = pool.get('company.company')
+        for mname, model in pool.iterobject():
+            if (not isregisteredby(model, self.module)
+                    or issubclass(model, Company)):
+                continue
+            company = None
+            for fname, field in model._fields.items():
+                if (field._type == 'many2one'
+                        and issubclass(field.get_target(), Company)):
+                    company = fname
+                    break
+            else:
+                continue
+            for fname, field in model._fields.items():
+                if not hasattr(field, 'get_target'):
+                    continue
+                Target = field.get_target()
+                if not issubclass(Target, CompanyMultiValueMixin):
+                    continue
+                if company in model._fields:
+                    self.assertIn(
+                        'company', list(field.context.keys()),
+                        msg="Missing '%s' value as company "
+                        'in "%s"."%s" context' % (
+                            company, mname, fname))
+
+    @with_transaction()
+    def test_company_rule(self):
+        "Test missing company rule"
+        pool = Pool()
+        Rule = pool.get('ir.rule')
+        Company = pool.get('company.company')
+        Employee = pool.get('company.employee')
+        User = pool.get('res.user')
+
+        to_check = defaultdict(set)
+        for mname, model in pool.iterobject():
+            if (not isregisteredby(model, self.module)
+                    or model.__access__
+                    or not (issubclass(model, ModelView)
+                        and issubclass(model, ModelStorage))
+                    or issubclass(model, (Company, Employee, User))):
+                continue
+            for fname, field in model._fields.items():
+                if (field._type == 'many2one'
+                        and issubclass(field.get_target(), Company)):
+                    to_check[fname].add(mname)
+
+        for fname, models in to_check.items():
+            rules = Rule.search([
+                    ('rule_group', 'where', [
+                            ('model.model', 'in', list(models)),
+                            ('global_p', '=', True),
+                            ('perm_read', '=', True),
+                            ]),
+                    ('domain', '=', PYSONEncoder(sort_keys=True).encode(
+                            [(fname, 'in', Eval('companies', []))])),
+                    ])
+            with_rules = {r.rule_group.model.model for r in rules}
+            self.assertGreaterEqual(with_rules, models,
+                msg='Models "%(models)s" are missing a global rule '
+                'for field "%(field)s"' % {
+                    'models': ', '.join(models - with_rules),
+                    'field': fname,
+                    })
+
+
+class CompanyTestCase(
+        PartyCompanyCheckEraseMixin, CompanyTestMixin, ModuleTestCase):
     'Test Company module'
     module = 'company'
 
@@ -64,23 +151,6 @@ class CompanyTestCase(ModuleTestCase):
         'Create company'
         company = create_company()
         self.assertTrue(company)
-
-    @with_transaction()
-    def test_company_recursion(self):
-        'Test company recursion'
-        pool = Pool()
-        Company = pool.get('company.company')
-
-        company1 = create_company()
-        company2 = create_company('Michael Scott Paper Company')
-        company2.parent = company1
-        company2.save()
-        self.assertTrue(company2)
-
-        self.assertRaises(Exception, Company.write,
-            [company1], {
-                'parent': company2.id,
-                })
 
     @with_transaction()
     def test_employe(self):
@@ -109,19 +179,18 @@ class CompanyTestCase(ModuleTestCase):
         company1 = create_company()
         company2 = create_company('Michael Scott Paper Company',
             currency=company1.currency)
-        company2.parent = company1
         company2.save()
         company3 = create_company()
 
         user1, user2 = User.create([{
                     'name': 'Jim Halper',
                     'login': 'jim',
-                    'main_company': company1.id,
+                    'companies': [('add', [company1.id, company2.id])],
                     'company': company1.id,
                     }, {
                     'name': 'Pam Beesly',
                     'login': 'pam',
-                    'main_company': company2.id,
+                    'companies': [('add', [company2.id])],
                     'company': company2.id,
                     }])
         self.assertTrue(user1)
@@ -155,7 +224,7 @@ class CompanyTestCase(ModuleTestCase):
         company = create_company()
         root = User(0)
         root.company = None
-        root.main_company = None
+        root.companies = None
         root.save()
 
         with transaction.set_user(0):
@@ -179,14 +248,14 @@ class CompanyTestCase(ModuleTestCase):
         user1, user2 = User.create([{
                     'name': "Jim Halper",
                     'login': "jim",
-                    'main_company': company.id,
+                    'companies': [('add', [company.id])],
                     'company': company.id,
                     'employees': [('add', [employee1.id, employee2.id])],
                     'employee': employee1.id,
                     }, {
                     'name': "Pam Beesly",
                     'login': "pam",
-                    'main_company': company.id,
+                    'companies': [('add', [company.id])],
                     'company': company.id,
                     'employees': [('add', [employee2.id])],
                     'employee': employee2.id,

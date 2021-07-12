@@ -16,6 +16,7 @@ def register():
         company.Company,
         company.Employee,
         company.CompanyConfigStart,
+        res.UserCompany,
         res.UserEmployee,
         res.User,
         ir.Sequence,
@@ -24,11 +25,13 @@ def register():
         ir.Rule,
         ir.Cron,
         ir.CronCompany,
+        ir.EmailTemplate,
         party.Configuration,
         party.ConfigurationLang,
         party.Party,
         party.PartyLang,
         party.ContactMechanism,
+        party.ContactMechanismLanguage,
         module='company', type_='model')
     Pool.register(
         company.CompanyConfig,
