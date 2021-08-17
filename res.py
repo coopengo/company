@@ -1,11 +1,22 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
-import copy
+from sql import Null
 
 from trytond.model import ModelSQL, fields
 from trytond.pool import PoolMeta, Pool
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
+
+
+class UserCompany(ModelSQL):
+    "User - Company"
+    __name__ = 'res.user-company.company'
+
+    user = fields.Many2One(
+        'res.user', "User", ondelete='CASCADE', select=True, required=True)
+    company = fields.Many2One(
+        'company.company', "Company",
+        ondelete='CASCADE', select=True, required=True)
 
 
 class UserEmployee(ModelSQL):
@@ -19,16 +30,23 @@ class UserEmployee(ModelSQL):
 
 class User(metaclass=PoolMeta):
     __name__ = 'res.user'
-    main_company = fields.Many2One('company.company', 'Main Company',
-        help="Grant access to the company and its children.")
-    company = fields.Many2One('company.company', 'Current Company',
-        domain=[('parent', 'child_of', [Eval('main_company')], 'parent')],
-        depends=['main_company'],
+
+    companies = fields.Many2Many(
+        'res.user-company.company', 'user', 'company', "Companies",
+        help="The companies that the user has access to.")
+    company = fields.Many2One(
+        'company.company', "Current Company",
+        domain=[
+            ('id', 'in', Eval('companies', [])),
+            ],
+        depends=['companies'],
         help="Select the company to work for.")
-    companies = fields.Function(fields.One2Many('company.company', None,
-            'Companies'), 'get_companies')
     employees = fields.Many2Many('res.user-company.employee', 'user',
         'employee', 'Employees',
+        domain=[
+            ('company', 'in', Eval('companies', [])),
+            ],
+        depends=['companies'],
         help="Add employees to grant the user access to them.")
     employee = fields.Many2One('company.employee', 'Current Employee',
         domain=[
@@ -37,44 +55,59 @@ class User(metaclass=PoolMeta):
             ],
         depends=['company', 'employees'],
         help="Select the employee to make the user behave as such.")
+    company_filter = fields.Selection([
+            ('one', "Current"),
+            ('all', "All"),
+            ], "Company Filter",
+        help="Define records of which companies are shown.")
 
     @classmethod
     def __setup__(cls):
         super(User, cls).__setup__()
         cls._context_fields.insert(0, 'company')
         cls._context_fields.insert(0, 'employee')
+        cls._context_fields.insert(0, 'company_filter')
 
-    @staticmethod
-    def default_main_company():
-        return Transaction().context.get('company')
+    @classmethod
+    def __register__(cls, module):
+        pool = Pool()
+        UserCompany = pool.get('res.user-company.company')
+        transaction = Transaction()
+        table = cls.__table__()
+        user_company = UserCompany.__table__()
+
+        super().__register__(module)
+
+        table_h = cls.__table_handler__(module)
+        cursor = transaction.connection.cursor()
+
+        # Migration from 5.8: remove main_company
+        if table_h.column_exist('main_company'):
+            cursor.execute(*user_company.insert(
+                    [user_company.user, user_company.company],
+                    table.select(
+                        table.id, table.main_company,
+                        where=table.main_company != Null)))
+            cursor.execute(*user_company.insert(
+                    [user_company.user, user_company.company],
+                    table.select(
+                        table.id, table.company,
+                        where=(table.company != Null)
+                        & (table.company != table.main_company))))
+            table_h.drop_column('main_company')
+
+    @classmethod
+    def default_companies(cls):
+        company = Transaction().context.get('company')
+        return [company] if company else []
 
     @classmethod
     def default_company(cls):
-        return cls.default_main_company()
+        return Transaction().context.get('company')
 
     @classmethod
-    def get_companies(cls, users, name):
-        Company = Pool().get('company.company')
-        companies = {}
-        company_childs = {}
-        for user in users:
-            companies[user.id] = []
-            company = None
-            if user.company:
-                company = user.company
-            elif user.main_company:
-                company = user.main_company
-            if company:
-                if company in company_childs:
-                    company_ids = company_childs[company]
-                else:
-                    company_ids = list(map(int, Company.search([
-                                ('parent', 'child_of', [company.id]),
-                                ])))
-                    company_childs[company] = company_ids
-                if company_ids:
-                    companies[user.id].extend(company_ids)
-        return companies
+    def default_company_filter(cls):
+        return 'one'
 
     def get_status_bar(self, name):
         def same_company(record):
@@ -88,11 +121,6 @@ class User(metaclass=PoolMeta):
                 status += ' - %s' % self.company.rec_name
             status += ' [%s]' % self.company.currency.code
         return status
-
-    @fields.depends('main_company')
-    def on_change_main_company(self):
-        self.company = self.main_company
-        self.employee = None
 
     @fields.depends('company', 'employees')
     def on_change_company(self):
@@ -111,54 +139,16 @@ class User(metaclass=PoolMeta):
         res = super(User, cls)._get_preferences(user,
             context_only=context_only)
         if not context_only:
-            res['main_company'] = None
-            if user.main_company:
-                res['main_company'] = user.main_company.id
-                res['main_company.rec_name'] = user.main_company.rec_name
+            res['companies'] = [c.id for c in user.companies]
             res['employees'] = [e.id for e in user.employees]
-        if user.employee:
-            res['employee'] = user.employee.id
-            res['employee.rec_name'] = user.employee.rec_name
-        if user.company:
-            res['company'] = user.company.id
-            res['company.rec_name'] = user.company.rec_name
         return res
 
     @classmethod
-    def get_preferences_fields_view(cls):
-        pool = Pool()
-        Company = pool.get('company.company')
-
-        res = super(User, cls).get_preferences_fields_view()
-        res = copy.deepcopy(res)
-
-        def convert2selection(definition, name):
-            del definition[name]['relation']
-            definition[name]['type'] = 'selection'
-            selection = []
-            definition[name]['selection'] = selection
-            return selection
-
-        if 'company' in res['fields']:
-            selection = convert2selection(res['fields'], 'company')
-            selection.append((None, ''))
-            user = cls(Transaction().user)
-            if user.main_company:
-                companies = Company.search([
-                        ('parent', 'child_of', [user.main_company.id],
-                            'parent'),
-                        ])
-                for company in companies:
-                    selection.append((company.id, company.rec_name))
-        return res
-
-    @classmethod
-    def read(cls, ids, fields_names=None):
-        Company = Pool().get('company.company')
+    def read(cls, ids, fields_names):
         user_id = Transaction().user
         if user_id == 0 and 'user' in Transaction().context:
             user_id = Transaction().context['user']
-        result = super(User, cls).read(ids, fields_names=fields_names)
+        result = super(User, cls).read(ids, fields_names)
         if (fields_names
                 and ((
                         'company' in fields_names
@@ -174,15 +164,12 @@ class User(metaclass=PoolMeta):
             if values:
                 if ('company' in fields_names
                         and 'company' in Transaction().context):
-                    main_company_id = values.get('main_company')
-                    if not main_company_id:
-                        main_company_id = cls.read([user_id],
-                            ['main_company'])[0]['main_company']
-                    companies = Company.search([
-                            ('parent', 'child_of', [main_company_id]),
-                            ])
+                    companies = values.get('companies')
+                    if not companies:
+                        companies = cls.read([user_id],
+                            ['companies'])[0]['companies']
                     company_id = Transaction().context['company']
-                    if ((company_id and company_id in map(int, companies))
+                    if ((company_id and company_id in companies)
                             or not company_id
                             or Transaction().user == 0):
                         values['company'] = company_id
