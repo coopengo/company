@@ -52,7 +52,8 @@ class Employee(ModelSQL, ModelView):
     __name__ = 'company.employee'
     party = fields.Many2One('party.party', 'Party', required=True,
         context={
-            'company': Eval('company', -1),
+            'company': If(
+                Eval('company', -1) >= 0, Eval('company', None), None),
             },
         depends=['company'],
         help="The party which represents the employee.")
@@ -147,5 +148,5 @@ class CompanyReport(Report):
     @classmethod
     def get_context(cls, records, header, data):
         context = super().get_context(records, header, data)
-        context['company'] = header['company']
+        context['company'] = header.get('company')
         return context
